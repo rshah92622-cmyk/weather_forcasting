@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KisanMitra - Smart Farmer Weather Dashboard</title>
+  <meta name="description" content="Intelligent weather forecasting dashboard for farmers with AI-powered crop recommendations, weather alerts, and cost-saving plantation advice.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <!-- Mobile Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <div class="logo-icon">
+          <i class="fas fa-seedling"></i>
+        </div>
+        <div class="logo-text">
+          <h1>KisanMitra</h1>
+          <span>Smart Farming</span>
+        </div>
+      </div>
+      <button class="sidebar-close" id="sidebarClose">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" data-page="dashboard" id="nav-dashboard">
+        <i class="fas fa-th-large"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="#" class="nav-item" data-page="forecast" id="nav-forecast">
+        <i class="fas fa-cloud-sun"></i>
+        <span>7-Day Forecast</span>
+      </a>
+      <a href="#" class="nav-item" data-page="ai-advisor" id="nav-ai-advisor">
+        <i class="fas fa-robot"></i>
+        <span>AI Advisor</span>
+      </a>
+      <a href="#" class="nav-item" data-page="plantation" id="nav-plantation">
+        <i class="fas fa-leaf"></i>
+        <span>Plantation Guide</span>
+      </a>
+      <a href="#" class="nav-item" data-page="history" id="nav-history">
+        <i class="fas fa-chart-line"></i>
+        <span>Weather History</span>
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="season-badge" id="seasonBadge">
+        <i class="fas fa-sun"></i>
+        <span>Summer Season</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Top Bar -->
+    <header class="topbar">
+      <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="search-bar" id="searchBar">
+        <i class="fas fa-search"></i>
+        <input type="text" id="citySearch" placeholder="Search city or village..." autocomplete="off">
+        <button class="search-btn" id="searchBtn">
+          <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+      <div class="topbar-actions">
+        <div class="lang-selector" id="langSelector">
+          <button class="lang-toggle" id="langToggle" title="Change Language">
+            <i class="fas fa-language"></i>
+            <span id="currentLangLabel">English</span>
+            <i class="fas fa-chevron-down lang-arrow"></i>
+          </button>
+          <div class="lang-dropdown" id="langDropdown">
+            <div class="lang-search">
+              <i class="fas fa-search"></i>
+              <input type="text" id="langSearchInput" placeholder="Search language...">
+            </div>
+            <div class="lang-list" id="langList">
+              <button class="lang-option active" data-lang="en" data-label="English">🇬🇧 English</button>
+              <button class="lang-option" data-lang="hi" data-label="हिन्दी">🇮🇳 हिन्दी (Hindi)</button>
+              <button class="lang-option" data-lang="mr" data-label="मराठी">🇮🇳 मराठी (Marathi)</button>
+              <button class="lang-option" data-lang="gu" data-label="ગુજરાતી">🇮🇳 ગુજરાતી (Gujarati)</button>
+              <button class="lang-option" data-lang="ta" data-label="தமிழ்">🇮🇳 தமிழ் (Tamil)</button>
+              <button class="lang-option" data-lang="te" data-label="తెలుగు">🇮🇳 తెలుగు (Telugu)</button>
+              <button class="lang-option" data-lang="bn" data-label="বাংলা">🇮🇳 বাংলা (Bengali)</button>
+              <button class="lang-option" data-lang="kn" data-label="ಕನ್ನಡ">🇮🇳 ಕನ್ನಡ (Kannada)</button>
+              <button class="lang-option" data-lang="ml" data-label="മലയാളം">🇮🇳 മലയാളം (Malayalam)</button>
+              <button class="lang-option" data-lang="pa" data-label="ਪੰਜਾਬੀ">🇮🇳 ਪੰਜਾਬੀ (Punjabi)</button>
+              <button class="lang-option" data-lang="ur" data-label="اردو">🇵🇰 اردو (Urdu)</button>
+              <button class="lang-option" data-lang="or" data-label="ଓଡ଼ିଆ">🇮🇳 ଓଡ଼ିଆ (Odia)</button>
+              <button class="lang-option" data-lang="as" data-label="অসমীয়া">🇮🇳 অসমীয়া (Assamese)</button>
+            </div>
+          </div>
+        </div>
+        <button class="location-btn" id="locationBtn" title="Use my location">
+          <i class="fas fa-crosshairs"></i>
+          <span class="btn-text">My Location</span>
+        </button>
+        <div class="notification-bell" id="notifBell">
+          <i class="fas fa-bell"></i>
+          <span class="notif-dot"></span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Dashboard Page -->
+    <div class="page active" id="page-dashboard">
+      <!-- Location & Date Header -->
+      <div class="page-header" id="locationHeader">
+        <div class="location-info">
+          <h2 id="currentCity"><i class="fas fa-map-marker-alt"></i> Loading...</h2>
+          <p id="currentDate">Loading date...</p>
+        </div>
+        <div class="quick-stats">
+          <div class="stat-pill" id="aqiPill">
+            <i class="fas fa-wind"></i>
+            <span>AQI: --</span>
+          </div>
+          <div class="stat-pill" id="uvPill">
+            <i class="fas fa-sun"></i>
+            <span>UV: --</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Current Weather Hero -->
+      <section class="weather-hero" id="weatherHero">
+        <div class="hero-main">
+          <div class="hero-temp">
+            <span class="temp-value" id="heroTemp">--</span>
+            <span class="temp-unit">°C</span>
+          </div>
+          <div class="hero-icon" id="heroIcon">
+            <i class="fas fa-cloud-sun"></i>
+          </div>
+          <div class="hero-desc">
+            <h3 id="heroCondition">Loading...</h3>
+            <p id="heroFeelsLike">Feels like --°C</p>
+          </div>
+        </div>
+        <div class="hero-details">
+          <div class="detail-item" id="detailHumidity">
+            <i class="fas fa-droplet"></i>
+            <div>
+              <span class="detail-value">--%</span>
+              <span class="detail-label">Humidity</span>
+            </div>
+          </div>
+          <div class="detail-item" id="detailWind">
+            <i class="fas fa-wind"></i>
+            <div>
+              <span class="detail-value">-- m/s</span>
+              <span class="detail-label">Wind Speed</span>
+            </div>
+          </div>
+          <div class="detail-item" id="detailRain">
+            <i class="fas fa-cloud-rain"></i>
+            <div>
+              <span class="detail-value">-- mm</span>
+              <span class="detail-label">Rainfall</span>
+            </div>
+          </div>
+          <div class="detail-item" id="detailPressure">
+            <i class="fas fa-gauge-high"></i>
+            <div>
+              <span class="detail-value">-- hPa</span>
+              <span class="detail-label">Pressure</span>
+            </div>
+          </div>
+          <div class="detail-item" id="detailVisibility">
+            <i class="fas fa-eye"></i>
+            <div>
+              <span class="detail-value">-- km</span>
+              <span class="detail-label">Visibility</span>
+            </div>
+          </div>
+          <div class="detail-item" id="detailClouds">
+            <i class="fas fa-cloud"></i>
+            <div>
+              <span class="detail-value">--%</span>
+              <span class="detail-label">Cloud Cover</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Farming Alert Banner -->
+      <section class="farm-alert" id="farmAlert" style="display:none;">
+        <div class="alert-icon"><i class="fas fa-exclamation-triangle"></i></div>
+        <div class="alert-content">
+          <h4 id="alertTitle">Weather Alert</h4>
+          <p id="alertMessage">Loading...</p>
+        </div>
+      </section>
+
+      <!-- Grid Cards -->
+      <div class="dashboard-grid">
+        <!-- AI Quick Recommendation -->
+        <section class="card ai-quick-card" id="aiQuickCard">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fas fa-robot"></i>
+              <h3>AI Farm Advisor</h3>
+            </div>
+            <button class="refresh-btn" id="refreshAI" title="Get new recommendation">
+              <i class="fas fa-rotate"></i>
+            </button>
+          </div>
+          <div class="ai-content" id="aiQuickContent">
+            <div class="ai-loading">
+              <div class="spinner"></div>
+              <p>Analyzing weather for farming advice...</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Hourly Forecast -->
+        <section class="card hourly-card">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fas fa-clock"></i>
+              <h3>Today's Forecast</h3>
+            </div>
+          </div>
+          <div class="hourly-scroll" id="hourlyForecast">
+            <div class="ai-loading">
+              <div class="spinner"></div>
+              <p>Loading hourly data...</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Sunrise/Sunset -->
+        <section class="card sun-card">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fas fa-sun"></i>
+              <h3>Sun & Moon</h3>
+            </div>
+          </div>
+          <div class="sun-times">
+            <div class="sun-item sunrise">
+              <i class="fas fa-arrow-up"></i>
+              <div>
+                <span class="sun-label">Sunrise</span>
+                <span class="sun-time" id="sunriseTime">--:--</span>
+              </div>
+            </div>
+            <div class="sun-visual" id="sunVisual">
+              <div class="sun-arc">
+                <div class="sun-dot" id="sunDot"></div>
+              </div>
+              <span class="day-length" id="dayLength">-- hrs daylight</span>
+            </div>
+            <div class="sun-item sunset">
+              <i class="fas fa-arrow-down"></i>
+              <div>
+                <span class="sun-label">Sunset</span>
+                <span class="sun-time" id="sunsetTime">--:--</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Crop Suitability -->
+        <section class="card crop-card">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fas fa-seedling"></i>
+              <h3>Best Crops Now</h3>
+            </div>
+          </div>
+          <div class="crop-list" id="cropList">
+            <div class="ai-loading">
+              <div class="spinner"></div>
+              <p>Analyzing conditions...</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5-Day Mini Forecast -->
+        <section class="card mini-forecast-card">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fas fa-calendar-week"></i>
+              <h3>5-Day Outlook</h3>
+            </div>
+            <a href="#" class="see-all" data-page="forecast">See all →</a>
+          </div>
+          <div class="mini-forecast" id="miniForecast">
+            <div class="ai-loading">
+              <div class="spinner"></div>
+              <p>Loading forecast...</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Soil & Irrigation -->
+        <section class="card soil-card">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fas fa-water"></i>
+              <h3>Irrigation Advice</h3>
+            </div>
+          </div>
+          <div class="irrigation-info" id="irrigationInfo">
+            <div class="irrigation-meter">
+              <div class="meter-ring">
+                <svg viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="42" fill="none" stroke="#e8f0fe" stroke-width="8"/>
+                  <circle cx="50" cy="50" r="42" fill="none" stroke="#2e7d32" stroke-width="8" 
+                          stroke-dasharray="264" stroke-dashoffset="132" stroke-linecap="round" id="irrigationRing"/>
+                </svg>
+                <div class="meter-text">
+                  <span class="meter-value" id="irrigationValue">--</span>
+                  <span class="meter-label">Need</span>
+                </div>
+              </div>
+            </div>
+            <div class="irrigation-tips" id="irrigationTips">
+              <p>Loading irrigation advice...</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Forecast Page -->
+    <div class="page" id="page-forecast">
+      <div class="page-header">
+        <h2><i class="fas fa-cloud-sun"></i> Extended Weather Forecast</h2>
+        <p>Plan your farming activities with detailed weather predictions</p>
+      </div>
+      <div class="forecast-grid" id="forecastGrid">
+        <div class="ai-loading">
+          <div class="spinner"></div>
+          <p>Loading forecast data...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI Advisor Page -->
+    <div class="page" id="page-ai-advisor">
+      <div class="page-header">
+        <h2><i class="fas fa-robot"></i> AI Farming Advisor</h2>
+        <p>Get personalized recommendations powered by AI</p>
+      </div>
+
+      <div class="ai-advisor-layout">
+        <div class="ai-config-panel">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title"><i class="fas fa-sliders"></i><h3>Configure Advice</h3></div>
+            </div>
+            <div class="config-form">
+              <div class="form-group">
+                <label for="cropSelect"><i class="fas fa-seedling"></i> Crop Type</label>
+                <select id="cropSelect">
+                  <option value="General">General / All Crops</option>
+                  <option value="Rice (Dhan)">Rice (Dhan)</option>
+                  <option value="Wheat (Gehu)">Wheat (Gehu)</option>
+                  <option value="Cotton (Kapas)">Cotton (Kapas)</option>
+                  <option value="Sugarcane (Ganna)">Sugarcane (Ganna)</option>
+                  <option value="Maize (Makka)">Maize (Makka)</option>
+                  <option value="Soybean">Soybean</option>
+                  <option value="Pulses (Dal)">Pulses (Dal)</option>
+                  <option value="Vegetables">Vegetables</option>
+                  <option value="Fruits">Fruits</option>
+                  <option value="Spices (Masale)">Spices (Masale)</option>
+                  <option value="Tea (Chai)">Tea (Chai)</option>
+                  <option value="Jute (Pat)">Jute (Pat)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="soilSelect"><i class="fas fa-mountain"></i> Soil Type</label>
+                <select id="soilSelect">
+                  <option value="Not specified">Select Soil Type</option>
+                  <option value="Alluvial Soil">Alluvial Soil</option>
+                  <option value="Black Soil (Regur)">Black Soil (Regur)</option>
+                  <option value="Red Soil">Red Soil</option>
+                  <option value="Laterite Soil">Laterite Soil</option>
+                  <option value="Sandy Soil">Sandy Soil</option>
+                  <option value="Clay Soil">Clay Soil</option>
+                  <option value="Loamy Soil">Loamy Soil</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="seasonSelect"><i class="fas fa-calendar"></i> Season</label>
+                <select id="seasonSelect">
+                  <option value="Current">Current Season</option>
+                  <option value="Kharif (Monsoon)">Kharif (Monsoon)</option>
+                  <option value="Rabi (Winter)">Rabi (Winter)</option>
+                  <option value="Zaid (Summer)">Zaid (Summer)</option>
+                </select>
+              </div>
+              <button class="primary-btn" id="getRecommendation">
+                <i class="fas fa-magic"></i> Get AI Recommendation
+              </button>
+            </div>
+          </div>
+
+          <!-- Quick Ask -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title"><i class="fas fa-comment-dots"></i><h3>Ask AI</h3></div>
+            </div>
+            <div class="quick-ask">
+              <textarea id="aiQuestion" placeholder="Ask any farming question... e.g., 'When should I plant tomatoes in Maharashtra?'" rows="3"></textarea>
+              <button class="primary-btn" id="askAI">
+                <i class="fas fa-paper-plane"></i> Ask
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="ai-response-panel">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title"><i class="fas fa-lightbulb"></i><h3>AI Recommendation</h3></div>
+            </div>
+            <div class="ai-response" id="aiResponse">
+              <div class="ai-placeholder">
+                <i class="fas fa-robot"></i>
+                <h4>Your AI Farming Assistant</h4>
+                <p>Select your crop and soil type, then click "Get AI Recommendation" for personalized farming advice based on current weather conditions.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Plantation Guide Page -->
+    <div class="page" id="page-plantation">
+      <div class="page-header">
+        <h2><i class="fas fa-leaf"></i> Plantation Guide</h2>
+        <p>Know the best time and conditions for planting</p>
+      </div>
+      <div class="plantation-content">
+        <!-- Plantation Calendar -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><i class="fas fa-calendar-alt"></i><h3>Indian Crop Calendar</h3></div>
+          </div>
+          <div class="crop-calendar" id="cropCalendar">
+            <div class="calendar-row header-row">
+              <div class="cal-crop">Crop</div>
+              <div class="cal-month">Jan</div><div class="cal-month">Feb</div>
+              <div class="cal-month">Mar</div><div class="cal-month">Apr</div>
+              <div class="cal-month">May</div><div class="cal-month">Jun</div>
+              <div class="cal-month">Jul</div><div class="cal-month">Aug</div>
+              <div class="cal-month">Sep</div><div class="cal-month">Oct</div>
+              <div class="cal-month">Nov</div><div class="cal-month">Dec</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Weather Suitability -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><i class="fas fa-check-circle"></i><h3>Current Weather Suitability</h3></div>
+          </div>
+          <div class="suitability-grid" id="suitabilityGrid">
+            <div class="ai-loading"><div class="spinner"></div><p>Analyzing suitability...</p></div>
+          </div>
+        </div>
+
+        <!-- Cost Calculator -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><i class="fas fa-calculator"></i><h3>Plantation Cost Estimator</h3></div>
+          </div>
+          <div class="cost-calculator">
+            <div class="form-group">
+              <label for="landArea"><i class="fas fa-ruler-combined"></i> Land Area (acres)</label>
+              <input type="number" id="landArea" placeholder="Enter area in acres" value="1">
+            </div>
+            <div class="form-group">
+              <label for="costCrop"><i class="fas fa-seedling"></i> Crop</label>
+              <select id="costCrop">
+                <option value="rice">Rice</option>
+                <option value="wheat">Wheat</option>
+                <option value="cotton">Cotton</option>
+                <option value="sugarcane">Sugarcane</option>
+                <option value="maize">Maize</option>
+                <option value="soybean">Soybean</option>
+                <option value="vegetables">Vegetables</option>
+              </select>
+            </div>
+            <button class="primary-btn" id="calcCost">
+              <i class="fas fa-calculator"></i> Estimate Cost
+            </button>
+            <div class="cost-result" id="costResult" style="display:none;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- History Page -->
+    <div class="page" id="page-history">
+      <div class="page-header">
+        <h2><i class="fas fa-chart-line"></i> Weather History</h2>
+        <p>View past weather data and trends</p>
+      </div>
+      <div class="history-content">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><i class="fas fa-temperature-half"></i><h3>Temperature Trend (Last 5 Days Forecast)</h3></div>
+          </div>
+          <div class="chart-container">
+            <canvas id="tempChart"></canvas>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><i class="fas fa-droplet"></i><h3>Humidity & Rain Trend</h3></div>
+          </div>
+          <div class="chart-container">
+            <canvas id="humidityChart"></canvas>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><i class="fas fa-database"></i><h3>Previous Weather Records</h3></div>
+          </div>
+          <div class="weather-table-wrap">
+            <table class="weather-table" id="weatherTable">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Temp (°C)</th>
+                  <th>Humidity (%)</th>
+                  <th>Rain (mm)</th>
+                  <th>Wind (m/s)</th>
+                  <th>Condition</th>
+                </tr>
+              </thead>
+              <tbody id="weatherTableBody">
+                <tr><td colspan="6">Loading data...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Notification Toast -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="./js/app.js"></script>
+</body>
+</html>
